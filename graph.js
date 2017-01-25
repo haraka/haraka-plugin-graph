@@ -1,9 +1,8 @@
 // log our denys
-/* jshint multistr: true */
 
-var http  = require('http');
 var urlp  = require('url');
 var utils = require('./utils');
+var constants = require('haraka-constants');
 
 var db;
 var select = "SELECT COUNT(*) AS hits, plugin FROM graphdata WHERE timestamp >= ? AND timestamp < ? GROUP BY plugin";
@@ -23,9 +22,9 @@ exports.register = function () {
     config  = plugin.config.get('graph.ini');
     var ignore_re = config.main.ignore_re || plugin.config.get('grapher.ignore_re') || 'queue|graph|relay';
     ignore_re = new RegExp(ignore_re);
-    
+
     plugins = {accepted: 0, disconnect_early: 0};
-    
+
     plugin.config.get('plugins', 'list').forEach(
         function (p) {
             if (!p.match(ignore_re)) {
@@ -66,7 +65,7 @@ exports.init_http = function (next, server) {
 exports.disconnect = function (next, connection) {
     if (!connection.current_line) {
         // disconnect without saying anything
-        return this.hook_deny(next, connection, [DENY, "random disconnect", "disconnect_early"]);
+        return this.hook_deny(next, connection, [constants.DENY, "random disconnect", "disconnect_early"]);
     }
     next();
 };
@@ -78,9 +77,9 @@ exports.deny = function (next, connection, params) {
             plugin.logerror("Insert DENY failed: " + err);
             return next();
         }
-        insert.run(function (err, rows) {
-            if (err) {
-                plugin.logerror("Insert failed: " + err);
+        insert.run(function (err2, rows) {
+            if (err2) {
+                plugin.logerror("Insert failed: " + err2);
             }
             try { insert.reset(); } catch (e) {}
             next();
@@ -95,9 +94,9 @@ exports.queue_ok = function (next, connection, params) {
             plugin.logerror("Insert DENY failed: " + err);
             return next();
         }
-        insert.run(function (err, rows) {
-            if (err) {
-                plugin.logerror("Insert failed: " + err);
+        insert.run(function (err2, rows) {
+            if (err2) {
+                plugin.logerror("Insert failed: " + err2);
             }
             try { insert.reset(); } catch (ignore) {}
             next();
@@ -185,13 +184,13 @@ exports.handle_data = function (req, res) {
         default:
             distance = 86400000;
     }
-    
+
     var today    = new Date().getTime();
     var earliest = today - distance;
     var group_by = distance/width; // one data point per pixel
-    
+
     res.write("Date," + utils.sort_keys(plugins).join(',') + "\n");
-    
+
     this.get_data(res, earliest, today, group_by);
 };
 
@@ -199,12 +198,12 @@ exports.get_data = function (res, earliest, today, group_by) {
     var next_stop = earliest + group_by;
     var aggregate = reset_agg();
     var plugin = this;
-    
+
     function write_to (data) {
         // plugin.loginfo(data);
         res.write(data + "\n");
     }
-    
+
     db.each(select, [earliest, next_stop], function (err, row) {
         if (err) {
             res.end();
@@ -215,19 +214,18 @@ exports.get_data = function (res, earliest, today, group_by) {
         aggregate[row.plugin] = row.hits;
     },
     function (err, rows ) {
-            write_to(utils.ISODate(new Date(next_stop)) + ',' + 
-                utils.sort_keys(plugins).map(function(i){ return 1000 * 60 * (aggregate[i]/group_by); }).join(',')
-            );
-            if (next_stop >= today) {
-                return res.end();
-            }
-            else {
-                return process.nextTick(function () {
-                    plugin.get_data(res, next_stop, today, group_by);
-                });
-            }
+        write_to(utils.ISODate(new Date(next_stop)) + ',' +
+            utils.sort_keys(plugins).map(function(i){ return 1000 * 60 * (aggregate[i]/group_by); }).join(',')
+        );
+        if (next_stop >= today) {
+            return res.end();
         }
-    );
+        else {
+            return process.nextTick(function () {
+                plugin.get_data(res, next_stop, today, group_by);
+            });
+        }
+    });
 };
 
 var reset_agg = function () {
