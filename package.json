@@ -1,6 +1,6 @@
 {
   "author": "Matt Sergeant <helpme@gmail.com> (http://baudehlo.com/)",
-  "name": "haraka-plugin-graph ",
+  "name": "haraka-plugin-graph",
   "description": "A SQLite backed graph plugin.",
   "keywords": [
     "haraka",
