@@ -7,7 +7,7 @@
     "plugin",
     "graph"
   ],
-  "version": "1.0.0",
+  "version": "1.0.1",
   "homepage": "https://github.com/haraka/haraka-graph",
   "repository": {
     "type": "git",
@@ -16,12 +16,12 @@
   "main": "graph.js",
   "dependencies": {
     "haraka-constants": "^1.0.2",
-    "haraka-utils": "^1.0.0",
+    "haraka-utils": "*",
     "sqlite3": "*"
   },
   "optionalDependencies": {},
   "devDependencies": {
-    "eslint": "^3.14.0"
+    "eslint": "*"
   },
   "licenses": [
     {
