@@ -1,7 +1,7 @@
 // log our denys
 
 var urlp  = require('url');
-var utils = require('./utils');
+var utils = require('haraka-utils');
 var constants = require('haraka-constants');
 
 var db;
