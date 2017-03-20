@@ -16,6 +16,7 @@
   "main": "graph.js",
   "dependencies": {
     "haraka-constants": "^1.0.2",
+    "haraka-utils": "^1.0.0",
     "sqlite3": "*"
   },
   "optionalDependencies": {},
