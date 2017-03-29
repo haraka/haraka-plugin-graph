@@ -56,8 +56,8 @@ exports.register = function () {
 exports.init_http = function (next, server) {
     var plugin = this;
 
-    server.http.app.use('/graph/data',  plugin.handle_data);
-    server.http.app.use('/graph/',      plugin.handle_root);
+    server.http.app.use('/graph/data',  plugin.handle_data.bind(plugin));
+    server.http.app.use('/graph/',      plugin.handle_root.bind(plugin));
 
     return next();
 };
