@@ -7,7 +7,7 @@
     "plugin",
     "graph"
   ],
-  "version": "1.0.1",
+  "version": "1.0.2",
   "homepage": "https://github.com/haraka/haraka-graph",
   "repository": {
     "type": "git",
@@ -21,7 +21,8 @@
   },
   "optionalDependencies": {},
   "devDependencies": {
-    "eslint": "*"
+    "eslint": "*",
+    "eslint-plugin-haraka": "*"
   },
   "licenses": [
     {
