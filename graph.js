@@ -12,9 +12,9 @@ var config;
 
 var width = 800;
 
-function createTable() {
+function createTable () {
     db.exec( "CREATE TABLE IF NOT EXISTS graphdata (timestamp INTEGER NOT NULL, plugin TEXT NOT NULL)")
-      .exec( "CREATE INDEX IF NOT EXISTS graphdata_idx ON graphdata (timestamp)");
+        .exec( "CREATE INDEX IF NOT EXISTS graphdata_idx ON graphdata (timestamp)");
 }
 
 exports.register = function () {
@@ -215,7 +215,7 @@ exports.get_data = function (res, earliest, today, group_by) {
     },
     function (err, rows ) {
         write_to(utils.ISODate(new Date(next_stop)) + ',' +
-            utils.sort_keys(plugins).map(function(i){ return 1000 * 60 * (aggregate[i]/group_by); }).join(',')
+            utils.sort_keys(plugins).map(function (i) { return 1000 * 60 * (aggregate[i]/group_by); }).join(',')
         );
         if (next_stop >= today) {
             return res.end();
