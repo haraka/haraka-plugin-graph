@@ -1,16 +1,16 @@
 // log our denys
 
-var urlp  = require('url');
-var utils = require('haraka-utils');
-var constants = require('haraka-constants');
+const urlp  = require('url');
+const utils = require('haraka-utils');
+const constants = require('haraka-constants');
 
-var db;
-var select = "SELECT COUNT(*) AS hits, plugin FROM graphdata WHERE timestamp >= ? AND timestamp < ? GROUP BY plugin";
-var insert;
-var plugins = {};
-var config;
+let db;
+const select = "SELECT COUNT(*) AS hits, plugin FROM graphdata WHERE timestamp >= ? AND timestamp < ? GROUP BY plugin";
+let insert;
+let plugins = {};
+let config;
 
-var width = 800;
+const width = 800;
 
 function createTable () {
     db.exec( "CREATE TABLE IF NOT EXISTS graphdata (timestamp INTEGER NOT NULL, plugin TEXT NOT NULL)")
@@ -18,9 +18,9 @@ function createTable () {
 }
 
 exports.register = function () {
-    var plugin = this;
+    const plugin = this;
     config  = plugin.config.get('graph.ini');
-    var ignore_re = config.main.ignore_re || plugin.config.get('grapher.ignore_re') || 'queue|graph|relay';
+    let ignore_re = config.main.ignore_re || plugin.config.get('grapher.ignore_re') || 'queue|graph|relay';
     ignore_re = new RegExp(ignore_re);
 
     plugins = {accepted: 0, disconnect_early: 0};
@@ -33,7 +33,7 @@ exports.register = function () {
         }
     );
 
-    var sqlite3;
+    let sqlite3;
     try {
         sqlite3 = require('sqlite3').verbose();
     }
@@ -43,7 +43,7 @@ exports.register = function () {
         return;
     }
 
-    var db_name = config.main.db_file || 'graphlog.db';
+    const db_name = config.main.db_file || 'graphlog.db';
     db = new sqlite3.Database(db_name, createTable);
     insert = db.prepare( "INSERT INTO graphdata VALUES (?,?)" );
 
@@ -54,7 +54,7 @@ exports.register = function () {
 };
 
 exports.init_http = function (next, server) {
-    var plugin = this;
+    const plugin = this;
 
     server.http.app.use('/graph/data',  plugin.handle_data.bind(plugin));
     server.http.app.use('/graph/',      plugin.handle_root.bind(plugin));
@@ -71,7 +71,7 @@ exports.disconnect = function (next, connection) {
 };
 
 exports.deny = function (next, connection, params) {
-    var plugin = this;
+    const plugin = this;
     insert.bind([new Date().getTime(), params[2]], function (err) {
         if (err) {
             plugin.logerror("Insert DENY failed: " + err);
@@ -88,7 +88,7 @@ exports.deny = function (next, connection, params) {
 };
 
 exports.queue_ok = function (next, connection, params) {
-    var plugin = this;
+    const plugin = this;
     insert.bind([new Date().getTime(), 'accepted'], function (err) {
         if (err) {
             plugin.logerror("Insert DENY failed: " + err);
@@ -163,9 +163,9 @@ exports.handle_root = function (req, res) {
 };
 
 exports.handle_data = function (req, res) {
-    var parsed = urlp.parse(req.url, true);
+    const parsed = urlp.parse(req.url, true);
     res.writeHead(200, { 'Content-Type': 'text/plain' });
-    var distance;
+    let distance;
     // this.loginfo("query period: " + (parsed.query.period || 'day'));
     switch (parsed.query.period) {
         case 'year':
@@ -185,9 +185,9 @@ exports.handle_data = function (req, res) {
             distance = 86400000;
     }
 
-    var today    = new Date().getTime();
-    var earliest = today - distance;
-    var group_by = distance/width; // one data point per pixel
+    const today    = new Date().getTime();
+    const earliest = today - distance;
+    const group_by = distance/width; // one data point per pixel
 
     res.write("Date," + utils.sort_keys(plugins).join(',') + "\n");
 
@@ -195,9 +195,9 @@ exports.handle_data = function (req, res) {
 };
 
 exports.get_data = function (res, earliest, today, group_by) {
-    var next_stop = earliest + group_by;
-    var aggregate = reset_agg();
-    var plugin = this;
+    const next_stop = earliest + group_by;
+    const aggregate = reset_agg();
+    const plugin = this;
 
     function write_to (data) {
         // plugin.loginfo(data);
@@ -228,10 +228,10 @@ exports.get_data = function (res, earliest, today, group_by) {
     });
 };
 
-var reset_agg = function () {
-    var agg = {};
-    for (var p in plugins) {
+function reset_agg () {
+    const agg = {};
+    for (const p in plugins) {
         agg[p] = 0;
     }
     return agg;
-};
+}

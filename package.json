@@ -35,6 +35,7 @@
   },
   "bin": {},
   "scripts": {
-    "lint": "./node_modules/.bin/eslint *.js"
+    "lint": "./node_modules/.bin/eslint *.js",
+    "lintfix": "./node_modules/.bin/eslint --fix *.js"
   }
 }
