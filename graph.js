@@ -65,7 +65,7 @@ exports.init_http = function (next, server) {
 exports.disconnect = function (next, connection) {
     if (!connection.current_line) {
         // disconnect without saying anything
-        return this.hook_deny(next, connection, [constants.DENY, "random disconnect", "disconnect_early"]);
+        return this.deny(next, connection, [constants.DENY, "random disconnect", "disconnect_early"]);
     }
     next();
 };
