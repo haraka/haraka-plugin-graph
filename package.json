@@ -17,7 +17,7 @@
   "dependencies": {
     "haraka-constants": "^1.0.2",
     "haraka-utils": "*",
-    "sqlite3": "*"
+    "sqlite3": "5.0.2"
   },
   "optionalDependencies": {},
   "devDependencies": {
