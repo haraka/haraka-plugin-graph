@@ -7,7 +7,7 @@
     "plugin",
     "graph"
   ],
-  "version": "1.0.3",
+  "version": "1.0.4",
   "homepage": "https://github.com/haraka/haraka-graph",
   "repository": {
     "type": "git",
@@ -21,7 +21,7 @@
   },
   "optionalDependencies": {},
   "devDependencies": {
-    "eslint": "*",
+    "eslint": ">=8",
     "eslint-plugin-haraka": "*"
   },
   "licenses": [
@@ -35,7 +35,7 @@
   },
   "bin": {},
   "scripts": {
-    "lint": "./node_modules/.bin/eslint *.js",
-    "lintfix": "./node_modules/.bin/eslint --fix *.js"
+    "lint": "npx eslint *.js",
+    "lintfix": "npx eslint --fix *.js"
   }
 }
