@@ -17,12 +17,13 @@
   "dependencies": {
     "haraka-constants": "^1.0.2",
     "haraka-utils": "*",
-    "sqlite3": "*"
+    "sqlite3": "^5.0.8"
   },
   "optionalDependencies": {},
   "devDependencies": {
     "eslint": ">=8",
-    "eslint-plugin-haraka": "*"
+    "eslint-plugin-haraka": "*",
+    "mocha": ">=9"
   },
   "licenses": [
     {
@@ -36,6 +37,7 @@
   "bin": {},
   "scripts": {
     "lint": "npx eslint *.js",
-    "lintfix": "npx eslint --fix *.js"
+    "lintfix": "npx eslint --fix *.js",
+    "test": "npx mocha"
   }
 }
