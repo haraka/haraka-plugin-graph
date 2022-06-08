@@ -7,7 +7,7 @@
     "plugin",
     "graph"
   ],
-  "version": "1.0.4",
+  "version": "1.0.5",
   "homepage": "https://github.com/haraka/haraka-graph",
   "repository": {
     "type": "git",
