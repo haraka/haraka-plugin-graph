@@ -1,6 +1,11 @@
 ### Unreleased
 
 
+### [1.0.5] - 2022-06-07
+
+- chore: add .npmignore (ignore ci, smaller npm package)
+
+
 ### [1.0.4] - 2022-06-06
 
 - ci: add GHA ci workflow
@@ -24,3 +29,4 @@
 
 
 [1.0.4]: https://github.com/haraka/haraka-plugin-graph/releases/tag/1.0.4
+[1.0.5]: https://github.com/haraka/haraka-plugin-graph/releases/tag/1.0.5
