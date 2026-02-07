@@ -15,18 +15,17 @@
   },
   "main": "index.js",
   "files": [
-    "CHANGELOG.md"
+    "CHANGELOG.md",
+    "config"
   ],
   "dependencies": {
-    "haraka-constants": "^1.0.2",
-    "haraka-utils": "^1.0.0",
-    "sqlite3": "^5.0.8"
+    "haraka-constants": "^1.0.7",
+    "haraka-utils": "^1.1.4",
+    "sqlite3": "^5.1.7"
   },
   "optionalDependencies": {},
   "devDependencies": {
-    "eslint": "^9.0.0",
-    "@haraka/eslint-config": "1.0.0",
-    "mocha": "^11.0.0"
+    "@haraka/eslint-config": "^2.0.3"
   },
   "licenses": [
     {
@@ -39,8 +38,17 @@
   },
   "bin": {},
   "scripts": {
-    "lint": "npx eslint *.js",
-    "lint:fix": "npx eslint --fix *.js",
-    "test": "npx mocha"
+    "format": "npm run prettier:fix && npm run lint:fix",
+    "lint": "npx eslint *.js test",
+    "lint:fix": "npx eslint *.js test --fix",
+    "prettier": "npx prettier . --check",
+    "prettier:fix": "npx prettier . --write --log-level=warn",
+    "test": "npx mocha",
+    "versions": "npx dependency-version-checker check",
+    "versions:fix": "npx dependency-version-checker update"
+  },
+  "prettier": {
+    "singleQuote": true,
+    "semi": false
   }
 }

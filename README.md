@@ -11,31 +11,29 @@ In order for this to work you need to install the `sqlite3` module via
 
 # Install
 
-````
+```
 npm i haraka-plugin-graph
-````
+```
 
 Add 'graph' to config/plugins
 
-
-Configuration
--------------
+## Configuration
 
 config settings are stored in config/graph.ini
 
-* db\_file
+- db_file
 
   The file name (or :memory:), where data is stored
 
-* http\_addr
+- http_addr
 
   The IP address to listen on for http. Default: `127.0.0.1`.
 
-* http\_port
+- http_port
 
   The port to listen on for http. Default: `8080`.
 
-* ignore\_re
+- ignore_re
 
   Regular expression to match plugins to ignore for logging.
   Default: `queue|graph|relay`
