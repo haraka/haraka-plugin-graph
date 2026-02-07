@@ -74,12 +74,12 @@ exports.deny = function (next, connection, params) {
     const plugin = this;
     insert.bind([new Date().getTime(), params[2]], function (err) {
         if (err) {
-            plugin.logerror("Insert DENY failed: " + err);
+            plugin.logerror(`Insert DENY failed: ${  err}`);
             return next();
         }
         insert.run(function (err2, rows) {
             if (err2) {
-                plugin.logerror("Insert failed: " + err2);
+                plugin.logerror(`Insert failed: ${  err2}`);
             }
             try { insert.reset(); }
             catch (e) {}
@@ -92,12 +92,12 @@ exports.queue_ok = function (next, connection, params) {
     const plugin = this;
     insert.bind([new Date().getTime(), 'accepted'], function (err) {
         if (err) {
-            plugin.logerror("Insert DENY failed: " + err);
+            plugin.logerror(`Insert DENY failed: ${  err}`);
             return next();
         }
         insert.run(function (err2, rows) {
             if (err2) {
-                plugin.logerror("Insert failed: " + err2);
+                plugin.logerror(`Insert failed: ${  err2}`);
             }
             try { insert.reset(); }
             catch (ignore) {}
@@ -108,7 +108,7 @@ exports.queue_ok = function (next, connection, params) {
 
 exports.handle_root = function (req, res) {
     res.writeHead(200, { 'Content-Type': 'text/html' });
-    res.end('<html>\
+    res.end(`<html>\
         <head>\
             <title>Haraka Mail Graphs</title>\
             <script src="http://dygraphs.com/dygraph-combined.js"\
@@ -119,7 +119,7 @@ exports.handle_root = function (req, res) {
             var interval_id;\
             function onLoad(period) {\
               if (!period) {\
-                  period = document.location.hash.replace(\'#\',\'\') || \'day\';\
+                  period = document.location.hash.replace('#','') || 'day';\
               }\
               var graph = new Dygraph(\
                 document.getElementById("graph"),\
@@ -150,18 +150,18 @@ exports.handle_root = function (req, res) {
           </script>\
             <h1>Haraka Mail Graphs</h1>\
             <div style="text-indent: 100px;">\
-            <a href="#year" onclick="onLoad(\'year\');">Year</a>\
-            <a href="#month" onclick="onLoad(\'month\');">Month</a>\
-            <a href="#week" onclick="onLoad(\'week\');">Week</a>\
-            <a href="#day" onclick="onLoad(\'day\');">Day</a>\
-            <a href="#hour" onclick="onLoad(\'hour\');">Hour</a>\
+            <a href="#year" onclick="onLoad('year');">Year</a>\
+            <a href="#month" onclick="onLoad('month');">Month</a>\
+            <a href="#week" onclick="onLoad('week');">Week</a>\
+            <a href="#day" onclick="onLoad('day');">Day</a>\
+            <a href="#hour" onclick="onLoad('hour');">Hour</a>\
             </div>\
             <hr>\
-            <div id="graph" style="height: 300px; width: ' + width + 'px;"></div>\
+            <div id="graph" style="height: 300px; width: ${  width  }px;"></div>\
             <div id="labels"></div>\
           </body>\
         </html>\
-    ');
+    `);
 };
 
 exports.handle_data = function (req, res) {
@@ -191,7 +191,7 @@ exports.handle_data = function (req, res) {
     const earliest = today - distance;
     const group_by = distance/width; // one data point per pixel
 
-    res.write("Date," + utils.sort_keys(plugins).join(',') + "\n");
+    res.write(`Date,${  utils.sort_keys(plugins).join(',')  }\n`);
 
     this.get_data(res, earliest, today, group_by);
 };
@@ -203,21 +203,21 @@ exports.get_data = function (res, earliest, today, group_by) {
 
     function write_to (data) {
         // plugin.loginfo(data);
-        res.write(data + "\n");
+        res.write(`${data  }\n`);
     }
 
     db.each(select, [earliest, next_stop], function (err, row) {
         if (err) {
             res.end();
-            return plugin.logerror("SELECT failed: " + err);
+            return plugin.logerror(`SELECT failed: ${  err}`);
         }
-        plugin.loginfo("got: " + row.hits + ", " + row.plugin + " next_stop: " + next_stop);
+        plugin.loginfo(`got: ${  row.hits  }, ${  row.plugin  } next_stop: ${  next_stop}`);
 
         aggregate[row.plugin] = row.hits;
     },
     function (err, rows ) {
-        write_to(utils.ISODate(new Date(next_stop)) + ',' +
-            utils.sort_keys(plugins).map(function (i) { return 1000 * 60 * (aggregate[i]/group_by); }).join(',')
+        write_to(`${utils.ISODate(new Date(next_stop))  },${ 
+            utils.sort_keys(plugins).map(function (i) { return 1000 * 60 * (aggregate[i]/group_by); }).join(',')}`
         );
         if (next_stop >= today) {
             return res.end();
