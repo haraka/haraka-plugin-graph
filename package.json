@@ -7,37 +7,48 @@
     "plugin",
     "graph"
   ],
-  "version": "1.0.5",
-  "homepage": "https://github.com/haraka/haraka-graph",
+  "version": "1.0.6",
+  "homepage": "https://github.com/haraka/haraka-plugin-graph",
   "repository": {
     "type": "git",
-    "url": "git://github.com/haraka/haraka-graph.git"
+    "url": "git://github.com/haraka/haraka-plugin-graph.git"
   },
-  "main": "graph.js",
+  "main": "index.js",
+  "files": [
+    "CHANGELOG.md",
+    "config"
+  ],
   "dependencies": {
-    "haraka-constants": "^1.0.2",
-    "haraka-utils": "*",
-    "sqlite3": "^5.0.8"
+    "haraka-constants": "^1.0.7",
+    "haraka-utils": "^1.1.4",
+    "sqlite3": "^5.1.7"
   },
   "optionalDependencies": {},
   "devDependencies": {
-    "eslint": ">=8",
-    "eslint-plugin-haraka": "*",
-    "mocha": ">=9"
+    "@haraka/eslint-config": "^2.0.3"
   },
   "licenses": [
     {
       "type": "MIT",
-      "url": "https://github.com/baudehlo/Haraka/blob/master/LICENSE"
+      "url": "https://github.com/haraka/Haraka/blob/master/LICENSE"
     }
   ],
   "bugs": {
-    "url": "https://github.com/haraka/haraka-graph/issues"
+    "url": "https://github.com/haraka/haraka-plugin-graph/issues"
   },
   "bin": {},
   "scripts": {
-    "lint": "npx eslint *.js",
-    "lintfix": "npx eslint --fix *.js",
-    "test": "npx mocha"
+    "format": "npm run prettier:fix && npm run lint:fix",
+    "lint": "npx eslint *.js test",
+    "lint:fix": "npx eslint *.js test --fix",
+    "prettier": "npx prettier . --check",
+    "prettier:fix": "npx prettier . --write --log-level=warn",
+    "test": "npx mocha",
+    "versions": "npx dependency-version-checker check",
+    "versions:fix": "npx dependency-version-checker update"
+  },
+  "prettier": {
+    "singleQuote": true,
+    "semi": false
   }
 }

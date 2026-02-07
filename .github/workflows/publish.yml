@@ -4,9 +4,16 @@ on:
   push:
     branches:
       - master
+    paths:
+      - package.json
 
 env:
   CI: true
+
+permissions:
+  id-token: write
+  contents: write
+  packages: write
 
 jobs:
   publish:
