@@ -3,9 +3,11 @@
 
 ### [1.0.6] - 2026-02-07
 
-- prettier
+- style: prettier
+- ci: update .github files
 - lint: autofix prefer-template
 - chore: rename files to match plugin standards
+- chore: bump all dep versions to latest
 
 ### [1.0.5] - 2022-06-07
 

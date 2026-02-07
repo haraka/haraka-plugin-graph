@@ -85,26 +85,26 @@ exports.deny = function (next, connection, params) {
       plugin.logerror(`Insert DENY failed: ${err}`)
       return next()
     }
-    insert.run(function (err2, rows) {
+    insert.run(function (err2) {
       if (err2) {
         plugin.logerror(`Insert failed: ${err2}`)
       }
       try {
         insert.reset()
-      } catch (e) {}
+      } catch (ignore) {}
       next()
     })
   })
 }
 
-exports.queue_ok = function (next, connection, params) {
+exports.queue_ok = function (next) {
   const plugin = this
   insert.bind([new Date().getTime(), 'accepted'], function (err) {
     if (err) {
       plugin.logerror(`Insert DENY failed: ${err}`)
       return next()
     }
-    insert.run(function (err2, rows) {
+    insert.run(function (err2) {
       if (err2) {
         plugin.logerror(`Insert failed: ${err2}`)
       }
@@ -228,7 +228,7 @@ exports.get_data = function (res, earliest, today, group_by) {
 
       aggregate[row.plugin] = row.hits
     },
-    function (err, rows) {
+    function () {
       write_to(
         `${utils.ISODate(new Date(next_stop))},${utils
           .sort_keys(plugins)
