@@ -20,7 +20,7 @@
   ],
   "dependencies": {
     "haraka-constants": "^1.0.7",
-    "haraka-utils": "^1.1.4",
+    "haraka-utils": "^2.0.0",
     "sqlite3": "^6.0.1"
   },
   "optionalDependencies": {},
