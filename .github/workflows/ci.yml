@@ -1,6 +1,8 @@
 name: CI
 
-on: [push]
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
 
 env:
   CI: true
@@ -8,6 +10,8 @@ env:
 jobs:
   lint:
     uses: haraka/.github/.github/workflows/lint.yml@master
+    permissions:
+      contents: read
 
   # coverage:
   #   uses: haraka/.github/.github/workflows/coverage.yml@master
@@ -21,6 +25,8 @@ jobs:
         os: [ubuntu-latest, windows-latest]
         node-version: ${{ fromJson(needs.get-lts.outputs.active) }}
       fail-fast: false
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -32,6 +38,8 @@ jobs:
 
   get-lts:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - id: get
         uses: msimerson/node-lts-versions@v1
