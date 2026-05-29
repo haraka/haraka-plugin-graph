@@ -19,13 +19,13 @@
     "config"
   ],
   "dependencies": {
-    "haraka-constants": "^1.0.7",
-    "haraka-utils": "^1.1.4",
+    "haraka-constants": "^1.0.8",
+    "haraka-utils": "^2.1.0",
     "sqlite3": "^6.0.1"
   },
   "optionalDependencies": {},
   "devDependencies": {
-    "@haraka/eslint-config": "^2.0.4"
+    "@haraka/eslint-config": "^3.0.0"
   },
   "licenses": [
     {
