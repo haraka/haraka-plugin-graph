@@ -1,4 +1,16 @@
+# CHANGELOG
+
 ### Unreleased
+
+### [1.0.7] - 2026-05-29
+
+- security: load dygraph from HTTPS CDN
+- fix: hot-reload `graph.ini`
+- doc: README drops nonexistent `http_addr`/`http_port` settings
+- doc: strip stray backticks from `ignore_re` in sample `graph.ini`
+- misc packaging / meta update (#31)
+- test: refactored against test-fixtures 1.7.0 (#30)
+- Bump sqlite3 from 5.1.7 to 6.0.1 (#28)
 
 ### [1.0.6] - 2026-02-07
 
@@ -33,3 +45,4 @@
 [1.0.4]: https://github.com/haraka/haraka-plugin-graph/releases/tag/1.0.4
 [1.0.5]: https://github.com/haraka/haraka-plugin-graph/releases/tag/1.0.5
 [1.0.6]: https://github.com/haraka/haraka-plugin-graph/releases/tag/1.0.6
+[1.0.7]: https://github.com/haraka/haraka-plugin-graph/releases/tag/1.0.7
