@@ -30,11 +30,11 @@ exports.register = function () {
 
   plugins = { accepted: 0, disconnect_early: 0 }
 
-  plugin.config.get('plugins', 'list').forEach(function (p) {
+  for (const p of plugin.config.get('plugins', 'list')) {
     if (!p.match(ignore_re)) {
       plugins[p] = 0
     }
-  })
+  }
 
   let sqlite3
   try {

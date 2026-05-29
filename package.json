@@ -36,7 +36,6 @@
   "bugs": {
     "url": "https://github.com/haraka/haraka-plugin-graph/issues"
   },
-  "bin": {},
   "scripts": {
     "prepare": "git rev-parse --git-dir >/dev/null 2>&1 && git config core.hooksPath .githooks || true",
     "format": "npm run prettier:fix && npm run lint:fix",

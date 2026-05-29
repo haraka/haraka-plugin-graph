@@ -1,6 +1,5 @@
 ### Unreleased
 
-
 ### [1.0.6] - 2026-02-07
 
 - style: prettier
