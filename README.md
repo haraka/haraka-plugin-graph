@@ -27,18 +27,14 @@ config settings are stored in config/graph.ini
 
   The file name (or :memory:), where data is stored
 
-- http_addr
-
-  The IP address to listen on for http. Default: `127.0.0.1`.
-
-- http_port
-
-  The port to listen on for http. Default: `8080`.
-
 - ignore_re
 
   Regular expression to match plugins to ignore for logging.
   Default: `queue|graph|relay`
+
+The plugin hangs its routes off Haraka's built-in HTTP server (see Haraka's
+`http.ini` for `http_addr` / `http_port`); it does not bind a listener of its
+own.
 
 <!-- leave these buried at the bottom of the document -->
 

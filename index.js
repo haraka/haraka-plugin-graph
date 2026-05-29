@@ -19,29 +19,36 @@ function createTable() {
   ).exec('CREATE INDEX IF NOT EXISTS graphdata_idx ON graphdata (timestamp)')
 }
 
-exports.register = function () {
+exports.load_graph_ini = function () {
   const plugin = this
-  config = plugin.config.get('graph.ini')
-  let ignore_re =
+  config = plugin.config.get('graph.ini', () => {
+    plugin.load_graph_ini()
+  })
+  const raw =
     config.main.ignore_re ||
     plugin.config.get('grapher.ignore_re') ||
     'queue|graph|relay'
-  ignore_re = new RegExp(ignore_re)
+  const ignore_re = new RegExp(raw)
 
-  plugins = { accepted: 0, disconnect_early: 0 }
-
+  const next_plugins = { accepted: 0, disconnect_early: 0 }
   for (const p of plugin.config.get('plugins', 'list')) {
     if (!p.match(ignore_re)) {
-      plugins[p] = 0
+      next_plugins[p] = 0
     }
   }
+  plugins = next_plugins
+  return plugins
+}
+
+exports.register = function () {
+  this.load_graph_ini()
 
   let sqlite3
   try {
     sqlite3 = require('sqlite3').verbose()
   } catch (e) {
-    plugin.logerror(e)
-    plugin.logerror(
+    this.logerror(e.message)
+    this.logerror(
       "unable to load sqlite3, try\n\n\t'npm install -g sqlite3'\n\n",
     )
     return
@@ -51,10 +58,10 @@ exports.register = function () {
   db = new sqlite3.Database(db_name, createTable)
   insert = db.prepare('INSERT INTO graphdata VALUES (?,?)')
 
-  plugin.register_hook('init_http', 'init_http')
-  plugin.register_hook('disconnect', 'disconnect')
-  plugin.register_hook('deny', 'deny')
-  plugin.register_hook('queue_ok', 'queue_ok')
+  this.register_hook('init_http', 'init_http')
+  this.register_hook('disconnect', 'disconnect')
+  this.register_hook('deny', 'deny')
+  this.register_hook('queue_ok', 'queue_ok')
 }
 
 exports.init_http = function (next, server) {
@@ -98,19 +105,18 @@ exports.deny = function (next, connection, params) {
 }
 
 exports.queue_ok = function (next) {
-  const plugin = this
-  insert.bind([new Date().getTime(), 'accepted'], function (err) {
+  insert.bind([new Date().getTime(), 'accepted'], (err) => {
     if (err) {
-      plugin.logerror(`Insert DENY failed: ${err}`)
+      this.logerror(`Insert accepted failed: ${err}`)
       return next()
     }
-    insert.run(function (err2) {
+    insert.run((err2) => {
       if (err2) {
-        plugin.logerror(`Insert failed: ${err2}`)
+        this.logerror(`Insert failed: ${err2}`)
       }
       try {
         insert.reset()
-      } catch (ignore) {}
+      } catch {}
       next()
     })
   })
@@ -121,8 +127,7 @@ exports.handle_root = function (req, res) {
   res.end(`<html>\
         <head>\
             <title>Haraka Mail Graphs</title>\
-            <script src="http://dygraphs.com/dygraph-combined.js"\
-               type="text/javascript"></script>\
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/dygraph/2.2.1/dygraph.min.js" integrity="sha512-j+6RLnV/rO2AvirXbl+yU5JATIllIaxbV7FaSgrMkJLQa231kNXziVpbTe9+np8S6fLYiZt8Ou0JUFT84zuJdw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>\
           </head>\
           <body onload="onLoad();">\
           <script>\
