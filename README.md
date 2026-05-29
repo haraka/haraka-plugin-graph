@@ -1,5 +1,7 @@
 # haraka-plugin-graph
 
+[![Test][ci-img]][ci-url] [![Cover][cov-img]][cov-url] [![Qlty][qlty-img]][qlty-url]
+
 Haraka Graph plugin
 
 This plugin logs accepted and rejected emails into a database and provides
@@ -37,3 +39,12 @@ config settings are stored in config/graph.ini
 
   Regular expression to match plugins to ignore for logging.
   Default: `queue|graph|relay`
+
+<!-- leave these buried at the bottom of the document -->
+
+[ci-img]: https://github.com/haraka/haraka-plugin-graph/actions/workflows/ci.yml/badge.svg
+[ci-url]: https://github.com/haraka/haraka-plugin-graph/actions/workflows/ci.yml
+[cov-img]: https://codecov.io/github/haraka/haraka-plugin-graph/coverage.svg
+[cov-url]: https://codecov.io/github/haraka/haraka-plugin-graph
+[qlty-img]: https://qlty.sh/gh/haraka/projects/haraka-plugin-graph/maintainability.svg
+[qlty-url]: https://qlty.sh/gh/haraka/projects/haraka-plugin-graph
